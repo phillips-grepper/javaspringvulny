@@ -176,6 +176,13 @@ public class MultiHttpSecurityConfig {
     @Configuration
     @Order(4)
     public static class OktaWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+        private final JwtTokenProvider jwtTokenProvider;
+
+        @Autowired
+        public OktaWebSecurityConfigurerAdapter(JwtTokenProvider jwtTokenProvider) {
+            this.jwtTokenProvider = jwtTokenProvider;
+        }
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/api/okta/**")
@@ -184,9 +191,9 @@ public class MultiHttpSecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/api/okta/**")
-                    .permitAll();
-            ;
+                    .anyRequest().authenticated()
+                    .and()
+                    .apply(new JwtConfigurer(jwtTokenProvider));
         }
     }
 }
