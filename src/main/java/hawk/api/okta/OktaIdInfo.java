@@ -1,13 +1,13 @@
 package hawk.api.okta;
 
 public class OktaIdInfo {
-    private final String token;
+    private final String username;
 
-    public OktaIdInfo(String token) {
-        this.token = token;
+    public OktaIdInfo(String username) {
+        this.username = username;
     }
 
-    public String getToken() {
-        return token;
+    public String getUsername() {
+        return username;
     }
 }
